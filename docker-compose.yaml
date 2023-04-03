@@ -1,5 +1,17 @@
 version: "3.8"
 services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=backend
+      - POSTGRES_DB=backend
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    restart: always
+
   backend:
     build:
       context: .
@@ -10,9 +22,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - USE_RELOADER=true
+      USE_RELOADER: "true"
+      RUN_MIGRATIONS: "true"
+      DATABASE_URL: postgresql+asyncpg://backend:backend@postgres:5432/backend
     env_file:
       - .env
+    depends_on:
+      - postgres
 
   frontend:
     build:
@@ -27,3 +43,6 @@ services:
       NUXT_PUBLIC_BACKEND_URL: "${BACKEND_URL:-http://0.0.0.0:8000}"
     env_file:
       - .env
+
+volumes:
+  data:

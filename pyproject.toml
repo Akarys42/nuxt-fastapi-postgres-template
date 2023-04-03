@@ -12,6 +12,9 @@ repository = "https://github.com/..."
 python = "^3.10.0"
 fastapi = "^0.95.0"
 uvicorn = "^0.21.1"
+sqlalchemy = {version = "^2.0.8", extras = ["asyncio"]}
+alembic = "^1.10.2"
+asyncpg = "^0.27.0"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.12.0"
